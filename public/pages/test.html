@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+    <title>weixin api test</title>
+    <link rel="stylesheet" href="../jslib/jquery-mobile/jquery.mobile-1.4.5.min.css">
+    <script src="../jslib/jquery/jquery-2.1.4.min.js"></script>
+    <script src="../jslib/jquery-mobile/jquery.mobile-1.4.5.min.js"></script>
+    <script src="../jslib/jquery/jquery.url.js"></script>
+    <script src="../jslib/ukulele/ukulele.js"></script>
+</head>
+
+<body uku-application>
+    <div data-role="page">
+        <div data-role="header">
+            <h1>weixin api test</h1>
+        </div>
+        <div role="main" class="ui-content">
+            <label>openid:</label>
+            <label>{{myCtrl.openid}}</label>
+            <button class="ui-btn" uku-onclick="myCtrl.getUserInfo()">get current user info</button>
+            <img uku-src="myCtrl.userInfo.headimgurl" style="width:46px"/>
+            <h4>{{myCtrl.userInfo.nickname}}</h4>
+        </div>
+    </div>
+</body>
+<script>
+    function MyController() {
+        this.openid = undefined;
+        this.userInfo = undefined;
+        var self = this;
+        this.getUserInfo = function () {
+            var url = "/user/"+this.openid;
+            $.get(url,function(data){
+                self.userInfo = data;
+            });
+        };
+    }
+
+
+    $(document).ready(function () {
+        var uku = new Ukulele();
+        var myCtrl = new MyController();
+        uku.registerController("myCtrl", myCtrl);
+        myCtrl.openid = jQuery.url.param("openid");
+        uku.init();
+    });
+</script>
+
+</html>
