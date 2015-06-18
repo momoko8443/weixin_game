@@ -16,11 +16,14 @@
             <h1>weixin api test</h1>
         </div>
         <div role="main" class="ui-content">
-            <label>openid:</label>
-            <label>{{myCtrl.openid}}</label>
-            <button class="ui-btn" uku-onclick="myCtrl.getUserInfo()">get current user info</button>
-            <img uku-src="myCtrl.userInfo.headimgurl" style="width:46px"/>
-            <h4>{{myCtrl.userInfo.nickname}}</h4>
+            <div>
+                <img uku-src="myCtrl.userInfo.headimgurl" style="width:46px;float:left"/>
+                <h4 style="float:left;padding-left:10px;vertical-align: middle;">{{myCtrl.userInfo.nickname}}</h4>
+                <h4 style="float:left;padding-left:10px;vertical-align: middle;">, welcome!</h4>
+                <div style="clear:both"/>
+            </div>
+            
+            <button class="ui-btn" uku-onclick="myCtrl.join()">Join Game ?</button>
         </div>
     </div>
 </body>
@@ -29,21 +32,25 @@
         this.openid = undefined;
         this.userInfo = undefined;
         var self = this;
-        this.getUserInfo = function () {
-            var url = "/user/"+this.openid;
-            $.get(url,function(data){
+        this.getUserInfo = function (openid) {
+            var url = "/user/" + openid;
+            $.get(url, function (data) {
                 self.userInfo = data;
+            }).error(function(){
+                console.error("get user error");
             });
         };
+        this.join = function () {
+            
+        };
     }
-
-
     $(document).ready(function () {
         var uku = new Ukulele();
         var myCtrl = new MyController();
         uku.registerController("myCtrl", myCtrl);
-        myCtrl.openid = jQuery.url.param("openid");
         uku.init();
+        myCtrl.openid = jQuery.url.param("openid");
+        myCtrl.getUserInfo(myCtrl.openid);
     });
 </script>
 

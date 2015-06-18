@@ -34,7 +34,6 @@ app.use('/connect',wechat('ukulele',function(req,res,next){
 }));
 var userlist = {};
 app.get('/', function (req, res) {
-    console.log("access me");
 	var code = req.query.code;
 	var getAccessTokenUrl = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="+appID+"&secret="+secret+"&code="+code+"&grant_type=authorization_code";
     
@@ -47,25 +46,7 @@ app.get('/', function (req, res) {
             var obj = JSON.parse(json);
             access_token = obj.access_token;
             var openid = obj.openid;
-            //var getUserInfoUrl = "https://api.weixin.qq.com/sns/userinfo?access_token="+access_token+"&openid="+openid;
-            res.redirect("pages/test.html?openid="+openid);
-            /*https.get(getUserInfoUrl,function(res3){
-                var json2 = "";
-                    res3.on('data', function(d) {
-                        json2 += d;
-                    });
-                    res3.on('end',function(){
-                        var userInfo = JSON.parse(json2);
-                        console.log(userInfo.openid);
-                        console.log(userInfo.nickname);
-                        console.log(userInfo.sex);
-                        console.log(userInfo.city);
-                        console.log(userInfo.province);
-                        console.log(userInfo.country);
-                        userlist[userInfo.openid] = userInfo;
-                        res.redirect("pages/index.html?userid="+userInfo.openid);
-                    });
-            }); */        
+            res.redirect("pages/test.html?openid="+openid);    
         });
 	}).on('error', function(e) {
 	  console.error(e);
@@ -91,10 +72,10 @@ app.get('/connect', function (req, res) {
 	}
 });
 
-app.get('/user/:openid',function(req,res){
+app.get('/user/:openid',function(req,res){   
     var openid = req.params.openid;
+    console.log("get user: "+openid);
     var getUserInfoUrl = "https://api.weixin.qq.com/sns/userinfo?access_token="+access_token+"&openid="+openid;
-    var getUserInfoUrl2 = "https://api.weixin.qq.com/cgi-bin/user/info?access_token="+access_token+"&openid="+openid+"&lang=zh_CN";
     https.get(getUserInfoUrl,function(res2){
         var json = "";
             res2.on('data', function(d) {
@@ -103,13 +84,10 @@ app.get('/user/:openid',function(req,res){
             res2.on('end',function(){
                 console.log(json);
                 var userInfo = JSON.parse(json);
-                /*if(userInfo.headimgurl){
-                    var url = userInfo.headimgurl;
-                    url = url.substring(0,url.length-1);
-                    userInfo.headimgurl = url + "46";
-                }*/
                 res.send(userInfo);
             });
+    }).on("error",function(e){
+        console.error(e);
     });
     
 });
