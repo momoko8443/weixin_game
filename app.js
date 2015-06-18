@@ -5,7 +5,16 @@ var wechat = require('wechat');
 var sha1 = require('sha1');
 var path = require('path');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
 var app = express();
+
+mongoose.connect('mongodb://127.0.0.1/weixin');
+var db = mongoose.connection;
+db.on('error',console.error.bind(console,'connection error'));
+db.once('open',function(){
+    console.log('connection success');
+});
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
