@@ -7,12 +7,14 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var app = express();
-
+var Models = require('./database/Models');
+var Activity = Models.Activity;
 mongoose.connect('mongodb://127.0.0.1/weixin');
 var db = mongoose.connection;
+
 db.on('error',console.error.bind(console,'connection error'));
 db.once('open',function(){
-    console.log('connection success');
+    console.log('connection success');    
 });
 
 
@@ -99,6 +101,24 @@ app.get('/user/:openid',function(req,res){
         console.error(e);
     });
     
+});
+
+app.post('/activity',function(req,res){
+    var activity = new Activity({
+        name:"活动2",
+		description:"这又是一场活动",
+		startDate: new Date(2015,5,1),
+		endDate:new Date(2015,5,30),
+		status:"running",
+		limit:500
+    });
+	activity.save(function(err,activity){
+		if(err){
+			res.send(err);
+		}else{
+			res.send("success");
+		}
+	});
 });
 
 var server = app.listen(port,function () {

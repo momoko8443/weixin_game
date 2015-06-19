@@ -22,8 +22,8 @@
                 <h4 style="float:left;padding-left:10px;vertical-align: middle;">, welcome!</h4>
                 <div style="clear:both"/>
             </div>
-            
-            <button class="ui-btn" uku-onclick="myCtrl.join()">Join Game ?</button>
+            <button class="ui-btn" uku-onclick="myCtrl.createActivity()">Create Test Activity</button>
+            <button class="ui-btn" uku-onclick="myCtrl.join()">Join Activity</button>
         </div>
     </div>
 </body>
@@ -43,6 +43,11 @@
         this.join = function () {
             
         };
+		this.createActivity = function(){
+			$.post("/activity",null,function(data){
+				alert(data);
+			});
+		};
     }
     $(document).ready(function () {
         var uku = new Ukulele();

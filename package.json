@@ -1,5 +1,5 @@
 {
-  "name": "weixin_seed",
+  "name": "weixin_game",
   "version": "1.0.0",
   "description": "this is a web app based on weixin platform.",
   "scripts": {
@@ -8,13 +8,14 @@
   "dependencies": {
     "body-parser": "^1.12.4",
     "express": "^4.12.4",
+    "https": "^1.0.0",
+    "mongoose": "^4.0.5",
     "sha1": "^1.1.1",
-    "wechat": "^1.2.5",
-    "https": "^1.0.0"
+    "wechat": "^1.2.5"
   },
   "repository": {
     "type": "git",
-    "url": "https://git.oschina.net/momoko8443/weixin.git"
+    "url": "https://git.oschina.net/momoko8443/weixin_game.git"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
