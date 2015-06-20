@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+    <title>Management Page</title>
+    <link rel="stylesheet" href="../jslib/bootstrap/css/bootstrap.min.css">
+    <script src="../jslib/jquery/jquery-2.1.4.min.js"></script>
+    <script src="../jslib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../jslib/ukulele/ukulele.js"></script>
+    <script src="../js/Activity.js"></script>
+</head>
+<body uku-application>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Create New Activity</button>
+    <h4>All Acticities</h4>
+    <table class="table table-bordered table table-hover table-condensed">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Joined Users</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            <tbody>
+                <tr uku-repeat="activity in mgr.activities">
+                    <td>{{activity.name}}</td>
+                    <td>{{activity.startDate}}</td>
+                    <td>{{activity.endDate}}</td>
+                    <td>{{activity.users.length}}</td>
+                    <td>{{activity.status}}</td>
+                    <td>
+                        <button class="btn btn-default">Edit</button>
+                        <button class="btn btn-default">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </thead>
+    </table>
+    
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Create Activity</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="nameInput">Activity Name</label>
+                            <input type="text" class="form-control" id="nameInput" placeholder="Enter the new activity name" uku-value="mgr.newActivity.name">
+                        </div>
+                        <div class="form-group">
+                            <label for="startDateInput">Start Date</label>
+                            <input type="date" class="form-control" id="startDateInput" uku-value="mgr.newActivity.startDate">
+                        </div>
+                        <div class="form-group">
+                            <label for="endDateInput">Start Date</label>
+                            <input type="date" class="form-control" id="endDateInput" uku-value="mgr.newActivity.endDate">
+                        </div>
+                        <div class="form-group">
+                            <label for="limitInput">Limit</label>
+                            <input type="number" min="1" class="form-control" id="limitDateInput" uku-value="mgr.newActivity.limit">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" uku-onclick="mgr.createActivity()">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    function ManagementController(){
+        this.activities = [];
+        var self = this;
+        this.getActivites = function(){
+            $.get("/activity",function(data){
+                for(var i=0;i<data.length;i++){
+                    var item = data[i];
+                    item.getUsersCount = function(){
+                        if(this.users){
+                            return this.users.length;
+                        }else{
+                            return 0;
+                        }
+                    };
+                }
+                self.activities = data;
+            });
+        };
+        this.createActivity = function(){
+            $.post("/activity",self.newActivity,function(data){
+                alert(data);
+            });
+        };
+        this.newActivity = new Activity;
+        
+    }
+    
+    
+    $(document).ready(function(){
+        var uku = new Ukulele();
+        var mgr = new ManagementController();
+        uku.registerController("mgr",mgr);
+        mgr.getActivites();
+        uku.init();
+    });
+    
+    
+</script>
+</html>

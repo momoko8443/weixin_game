@@ -1,4 +1,4 @@
-/*! ukulelejs2 - v1.0.0 - 2015-06-17 */function Ukulele() {
+/*! ukulelejs2 - v1.0.0 - 2015-06-20 */function Ukulele() {
     "use strict";
     this.controllersDefinition = {};
     this.viewControllerArray = [];
@@ -266,7 +266,7 @@
                 var node = nodes[i];
                 if (node.nodeType === 3) {
                     
-                    if (text || text ==="") {
+                    if (text || text ==="" || text === 0) {
                         node.nodeValue = text;
                         return;
                     } else {
@@ -395,8 +395,15 @@ ObjectUtil.getFinalValue = function(object,attrName){
     var finalValue = object;
     if(finalValue){
         for (var i = 0; i < temp.length; i++) {
-            finalValue = finalValue[temp[i]];
-            if(!finalValue){
+            var property = temp[i];
+            if(property.search("\\(\\)") === -1){
+                finalValue = finalValue[property];    
+            }else{
+                property = property.substring(0,property.length-2);
+                finalValue = finalValue[property].apply(finalValue);
+            }
+            
+            if(finalValue === undefined || finalValue === null){
                 break;
             }
         }

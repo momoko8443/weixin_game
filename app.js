@@ -103,14 +103,31 @@ app.get('/user/:openid',function(req,res){
     
 });
 
+app.get('/activity',function(req,res){
+    Activity.find(function(err,result){
+        if(err){
+            console.error(err);
+        }else{
+            res.send(result);
+        }
+    });
+    
+});
+
 app.post('/activity',function(req,res){
+    var a_name = req.body.name;
+    var a_description = req.body.description;
+    var a_startDate = req.body.startDate;
+    var a_endDate = req.body.endDate;
+    var a_limit = req.body.limit;
+    var a_status = req.body.status;
     var activity = new Activity({
-        name:"活动2",
-		description:"这又是一场活动",
-		startDate: new Date(2015,5,1),
-		endDate:new Date(2015,5,30),
-		status:"running",
-		limit:500
+        name:a_name,
+		description:a_description,
+		startDate: a_startDate,
+		endDate:a_endDate,
+		status:a_status,
+		limit:a_limit
     });
 	activity.save(function(err,activity){
 		if(err){
