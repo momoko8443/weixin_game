@@ -31,7 +31,7 @@
                     <td>{{activity.status}}</td>
                     <td>
                         <button class="btn btn-default">Edit</button>
-                        <button class="btn btn-default">Delete</button>
+                        <button class="btn btn-default" uku-onclick="activity.removeActivity(name)">Delete</button>
                     </td>
                 </tr>
             </tbody>
@@ -88,6 +88,9 @@
                             return 0;
                         }
                     };
+                    item.removeActivity = function(name){
+                        alert(name);
+                    };
                 }
                 self.activities = data;
             });
@@ -98,6 +101,10 @@
             });
         };
         this.newActivity = new Activity;
+        
+        this.removeActivity = function(name){
+            alert(name);    
+        };
         
     }
     
