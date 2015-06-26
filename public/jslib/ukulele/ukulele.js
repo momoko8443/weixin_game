@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /*! ukulelejs2 - v1.0.0 - 2015-06-26 */function Ukulele() {
 	"use strict";
 	this.controllersDefinition = {};
@@ -43,48 +42,6 @@
 						}
 					}
 				}
-=======
-/*! ukulelejs2 - v1.0.0 - 2015-06-22 */function Ukulele() {
-    "use strict";
-    this.controllersDefinition = {};
-    this.viewControllerArray = [];
-    this.refreshHandler = undefined;
-    var copyControllers = {};
-    var self = this;
-    var watchTimer;
-    //心跳功能来判断bound的attribute有没有在内存中被更新，从而主动刷新视图
-    var watchBoundAttribute = function () {
-        for (var alias in self.controllersDefinition) {
-            var controllerModel = self.controllersDefinition[alias];
-            var controller = controllerModel.controllerInstance;
-            var previousCtrlModel = copyControllers[alias];
-            for (var i = 0; i < controllerModel.boundAttrs.length; i++) {
-                var boundAttr = controllerModel.boundAttrs[i];
-                var attrName = boundAttr.attributeName;
-                if (previousCtrlModel) {
-                    var finalValue = ObjectUtil.getFinalValue(controller, attrName);
-                    var previousFinalValue = ObjectUtil.getFinalValue(previousCtrlModel, attrName);
-                    if (!ObjectUtil.compare(previousFinalValue, finalValue)) {
-                        var changedBoundAttrs = controllerModel.getBoundAttrByName(attrName);
-                        for(var j=0;j<changedBoundAttrs.length;j++){
-                            var changedBoundAttr = changedBoundAttrs[j];
-                            if (changedBoundAttr.ukuTag === "repeat") {
-                            //1.repeat的处理，先把repeat的render逻辑写在这里，以后移到各自的class
-                                changedBoundAttr.renderRepeat(controller);
-                            } else if (changedBoundAttr.expression !== null) {
-                                //2. 处理expression
-                                changedBoundAttr.renderExpression(controller);
-                            } else {
-                                //3. 与属性attribute bind，目前理论上全属性支持
-                                changedBoundAttr.renderAttribute(controller);
-                            }
-                            if(self.refreshHandler){
-                                self.refreshHandler.call(null);
-                            }
-                        }
-                    }
-                }
->>>>>>> 39a1fb7211cb016550b626fff304d86456cde265
 
 			}
 			previousCtrlModel = ObjectUtil.deepClone(controller);
@@ -94,7 +51,6 @@
 		watchTimer = setTimeout(watchBoundAttribute, 500);
 	}
 
-<<<<<<< HEAD
 	//解析html中各个uku的tag
 	function analyizeElement($element) {
 		var subElements = [];
@@ -124,15 +80,6 @@
 							if (!UkuleleUtil.isRepeat($(subElement)) && !UkuleleUtil.isInRepeat($(subElement))) {
 								dealWithEvent($(subElement), attrName);
 							}
-=======
-            }
-            previousCtrlModel = ObjectUtil.deepClone(controller);
-            delete copyControllers[alias];
-            copyControllers[alias] = previousCtrlModel;
-        }
-        watchTimer = setTimeout(watchBoundAttribute, 500);
-    };
->>>>>>> 39a1fb7211cb016550b626fff304d86456cde265
 
 						} else if (attrName.search('repeat') !== -1) {
 							//is an repeat
@@ -208,7 +155,6 @@
 			var controllerInst = controllerModel.controllerInstance;
 			var eventNameInJQuery = eventName.substring(2);
 
-<<<<<<< HEAD
 			var index = UkuleleUtil.searchUkuFuncArg(expression);
 			var functionName = expression.substring(0, index);
 			functionName = UkuleleUtil.getFinalAttribute(functionName);
@@ -220,57 +166,6 @@
 				withoutArgument = true;
 			}
 			_arguments = _arguments.split(",");
-=======
-        //处理绑定的attribute
-        function dealWithAttribute(element, tagName) {
-                var attr = element.attr("uku-" + tagName);
-                var controllerModel = getBoundControllerModelByName(attr);
-                var controllerInst = controllerModel.controllerInstance;
-                attr = getFinalAttr(attr);
-                element.attr(tagName, ObjectUtil.getFinalValue(controllerInst, attr));
-                var boundAttr = new BoundAttribute(attr, tagName, null, element);
-                controllerModel.addBoundAttr(boundAttr);
-                var elementName = element[0].tagName;
-                if (elementName === "INPUT" && tagName === "value") {
-                    element.change(function () {
-                        var temp = attr.split(".");
-                        var finalInstance = controllerInst;
-                        for (var i = 0; i < temp.length - 1; i++) {
-                            finalInstance = finalInstance[temp[i]];
-                        }
-                        finalInstance[temp[temp.length - 1]] = element.val();
-                    });
-                }
-            }
-            //处理 事件 event
-        function dealWithEvent(element, eventName) {
-            var expression = element.attr("uku-" + eventName);
-            var controllerModel = getBoundControllerModelByName(expression);
-            var controllerInst = controllerModel.controllerInstance;
-
-            var eventNameInJQuery = eventName.substring(2);
-            
-            var re = /\(.*\)/;
-            var index = expression.search(re);
-            var functionName = expression.substring(0,index);
-            functionName =getFinalAttr(functionName);
-            var finalValueObject = ObjectUtil.getAttributeFinalValue2(controllerInst,functionName);
-            var finalValue = finalValueObject.value;
-            var _arguments = expression.substring(index+1,expression.length-1);
-            _arguments = _arguments.split(",");
-            
-            element.bind(eventNameInJQuery, function () {
-                
-                var new_arguments = [];
-                for(var i=0;i<_arguments.length;i++){
-                    var argument = _arguments[i];
-                    var temp = ObjectUtil.getFinalValue(controllerInst,argument);
-                    new_arguments.push(temp);
-                }
-                finalValue.apply(finalValueObject.parent,new_arguments.concat(arguments));
-            });
-        }
->>>>>>> 39a1fb7211cb016550b626fff304d86456cde265
 
 			element.bind(eventNameInJQuery, function() {
 				if (!withoutArgument) {
@@ -278,8 +173,13 @@
 					for (var i = 0; i < _arguments.length; i++) {
 						var argument = _arguments[i];
 						var agrumentInst = getBoundControllerModelByName(argument).controllerInstance;
-						argument = UkuleleUtil.getFinalAttribute(argument);
-						var temp = UkuleleUtil.getFinalValue(agrumentInst, argument);
+						var temp;
+						if(argument.split(".").length === 1){
+							temp = agrumentInst;
+						}else{
+							argument = UkuleleUtil.getFinalAttribute(argument);
+							temp = UkuleleUtil.getFinalValue(agrumentInst, argument);
+						}						
 						new_arguments.push(temp);
 					}
 					finalValue.apply(finalValueObject.parent, new_arguments.concat(arguments));
@@ -495,54 +395,6 @@ ObjectUtil.getType = function (obj) {
     }
 };
 
-<<<<<<< HEAD
-=======
-ObjectUtil.getAttributeFinalValue = function(object,attrName){
-    return ObjectUtil.getAttributeFinalValue2(object,attrName).value;
-};
-
-ObjectUtil.getAttributeFinalValue2 = function(object,attrName){
-    var finalValue = object;
-    var parentValue;
-    var temp = attrName.split(".");
-
-    if(finalValue){
-        for (var i = 0; i < temp.length; i++) {
-            var property = temp[i]; 
-            parentValue = finalValue;
-            finalValue = finalValue[property];
-            if(finalValue === undefined || finalValue === null){
-                break;
-            }
-        }
-    }
-    return {"value":finalValue,"parent":parentValue};
-};
-
-ObjectUtil.getFinalValue = function(object,attrName){
-    var re = /\(.*\)/;
-    var index = attrName.search(re);
-    if(index === -1){
-        //is attribute
-       return ObjectUtil.getAttributeFinalValue(object,attrName);
-    }else{
-        //is function
-        var functionName = attrName.substring(0,index);
-        var finalValueObject = ObjectUtil.getAttributeFinalValue2(object,functionName);
-        var finalValue = finalValueObject.value;
-        var _arguments = attrName.substring(index+1,attrName.length-1);
-        _arguments = _arguments.split(",");
-        var new_arguments = [];
-        for(var i=0;i<_arguments.length;i++){
-            var argument = _arguments[i];
-            var temp = ObjectUtil.getFinalValue(object,argument);
-            new_arguments.push(temp);
-        }
-        finalValue = finalValue.apply(finalValueObject.parent,new_arguments);
-        return finalValue;
-    }
-};
->>>>>>> 39a1fb7211cb016550b626fff304d86456cde265
 
 //对象比较
 ObjectUtil.compare = function (objA, objB) {
@@ -589,11 +441,7 @@ ObjectUtil.compare = function (objA, objB) {
     }
     return result;
 };
-<<<<<<< HEAD
 //深度克隆
-=======
-
->>>>>>> 39a1fb7211cb016550b626fff304d86456cde265
 ObjectUtil.deepClone = function(obj){
 
 	var o,i,j,k;
@@ -633,7 +481,6 @@ ObjectUtil.deepClone = function(obj){
 	}
  
 	return o;
-<<<<<<< HEAD
 };
 function UkuleleUtil() {
 	'use strict';
@@ -701,7 +548,6 @@ UkuleleUtil.getAttributeFinalValue2 = function(object,attrName){
     var finalValue = object;
     var parentValue;
     var temp = attrName.split(".");
-
     if(finalValue){
         for (var i = 0; i < temp.length; i++) {
             var property = temp[i]; 
@@ -738,6 +584,3 @@ UkuleleUtil.getFinalValue = function(object,attrName){
         return finalValue;
     }
 };
-=======
-};
->>>>>>> 39a1fb7211cb016550b626fff304d86456cde265

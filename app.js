@@ -24,6 +24,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.query());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 var appID = "wx86280d314fb1fd70";
 var secret = "bb185ab1918499b43069517667abbac7";
@@ -130,6 +131,29 @@ app.post('/activity',function(req,res){
 		limit:a_limit
     });
 	activity.save(function(err,activity){
+		if(err){
+			res.send(err);
+		}else{
+			res.send("success");
+		}
+	});
+});
+
+app.put('/activity',function(req,res){
+	var query = { name: req.body.name };
+	var updateActitvity = req.body;
+	Activity.findOneAndUpdate(query, updateActitvity, function(err,activity){
+		if(err){
+			res.send(err);
+		}else{
+			res.send("success");
+		}
+	});
+});
+
+app.delete('/activity/:id',function(req,res){
+	var query = {_id: req.params.id};
+	Activity.remove(query,function(err){
 		if(err){
 			res.send(err);
 		}else{
