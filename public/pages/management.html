@@ -27,8 +27,8 @@
 				<tbody>
 					<tr uku-repeat="activity in mgr.activities">
 						<td>{{activity.name}}</td>
-						<td>{{activity.startDate}}</td>
-						<td>{{activity.endDate}}</td>
+						<td>{{activity.startDateLabelFunc()}}</td>
+						<td>{{activity.endDateLabelFunc()}}</td>
 						<td>{{activity.users.length}}</td>
 						<td>{{activity.status}}</td>
 						<td>
@@ -63,7 +63,7 @@
 								<input type="date" class="form-control" id="startDateInput" uku-value="mgr.newActivity.startDate">
 							</div>
 							<div class="form-group">
-								<label for="endDateInput">Start Date</label>
+								<label for="endDateInput">End Date</label>
 								<input type="date" class="form-control" id="endDateInput" uku-value="mgr.newActivity.endDate">
 							</div>
 							<div class="form-group">
@@ -101,11 +101,11 @@
 							</div>
 							<div class="form-group">
 								<label for="editStartDateInput">Start Date</label>
-								<input type="date" class="form-control" id="editStartDateInput" uku-value="mgr.editActivity.startDate">
+								<input type="date" class="form-control" id="editStartDateInput" uku-value="mgr.editActivity.startDateLabelFunc()">
 							</div>
 							<div class="form-group">
-								<label for="editEndDateInput">Start Date</label>
-								<input type="date" class="form-control" id="editEndDateInput" uku-value="mgr.editActivity.endDate">
+								<label for="editEndDateInput">End Date</label>
+								<input type="date" class="form-control" id="editEndDateInput" uku-value="mgr.editActivity.endDateLabelFunc()">
 							</div>
 							<div class="form-group">
 								<label for="editLimitDateInput">Limit</label>
@@ -131,7 +131,13 @@
 			var self = this;
 			this.getActivites = function() {
 				$.get("/activity", function(data) {
-					self.activities = data;
+					var arr =[];
+					for(var i=0;i<data.length;i++){
+						var actvity = new Activity();
+						actvity.convertModel2Entity(data[i]);
+						arr.push(actvity);
+					}
+					self.activities = arr;
 				});
 			};
 			this.createActivity = function() {
@@ -148,7 +154,9 @@
 				}});
 			};
 			this.setEditActivity = function(activity){
-				alert(activity.name);
+				this.editActivity = activity;
+				this.editActivity.startDate = activity.startDate.split("T")[0];
+				$('#editModal').modal('toggle');
 			};
 
 		}
