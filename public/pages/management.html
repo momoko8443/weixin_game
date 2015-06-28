@@ -10,7 +10,7 @@
 		<script src="../js/Activity.js"></script>
 	</head>
 	<body uku-application>
-		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">
 			Create New Activity
 		</button>
 		<h4>All Acticities</h4>
@@ -69,6 +69,12 @@
 							<div class="form-group">
 								<label for="limitInput">Limit</label>
 								<input type="number" min="1" class="form-control" id="limitDateInput" uku-value="mgr.newActivity.limit">
+							</div>
+							<div class="form-group">
+								<label for="statusInput">Status</label>
+								<select uku-value="mgr.newActivity.status">
+								  <option uku-repeat="status in mgr.statusEnum" uku-value ="status.value">{{status.name}}</option>
+								</select>
 							</div>
 						</form>
 					</div>
@@ -158,7 +164,10 @@
 				this.editActivity.startDate = activity.startDate.split("T")[0];
 				$('#editModal').modal('toggle');
 			};
-
+			this.statusEnum = [{"name":"pending","value":"pending"},
+							{"name":"running","value":"running"},
+							{"name":"suspended","value":"suspended"},
+							{"name":"over","value":"over"}];
 		}
 
 
