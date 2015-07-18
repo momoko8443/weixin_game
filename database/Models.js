@@ -1,22 +1,23 @@
 var mongoose = require('mongoose');
-var ActivitySchema = mongoose.Schema({
+var TestingSchema = mongoose.Schema({
     name: String,
     description: String,
-    startDate: Date,
-    endDate: Date,
     status: String,
-    limit: Number,
-    users: [{
-        openid: String,
-        nickname: String,
-        headimgurl: String,
-        vouchers: [{
-            code: String,
-            description: String,
-            discount: String,
-            status: String
-                                        }]
+    questions: [{
+    	name:String,
+    	description: String,
+    	isMultiple:Boolean,    	
+    	options:[{
+    		name:String,
+    		score:Number
+    	}]
+    }],
+    results:[{
+    	name:String,
+    	description: String,
+    	minScore:Number,
+    	maxScore:Number
     }]
 });
-var Activity = mongoose.model('Activity', ActivitySchema);
-exports.Activity = Activity;
+var Testing = mongoose.model('Testing', TestingSchema);
+exports.Testing = Testing;

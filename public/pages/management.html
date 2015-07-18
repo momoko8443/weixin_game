@@ -7,37 +7,33 @@
 		<script src="../jslib/jquery/jquery-2.1.4.min.js"></script>
 		<script src="../jslib/bootstrap/js/bootstrap.min.js"></script>
 		<script src="../jslib/ukulele/ukulele.js"></script>
-		<script src="../js/Activity.js"></script>
+		<script src="../js/Testing.js"></script>
+		<script src="../jslib/lodash/lodash.min.js"></script>
 	</head>
 	<body uku-application>
 		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">
-			Create New Activity
+			Create New Testing
 		</button>
 		<h4>All Acticities</h4>
 		<table class="table table-bordered table table-hover table-condensed">
 			<thead>
 				<tr>
 					<th>Name</th>
-					<th>Start Date</th>
-					<th>End Date</th>
-					<th>Joined Users</th>
 					<th>Status</th>
 					<th>Action</th>
 				</tr>
 				<tbody>
-					<tr uku-repeat="activity in mgr.activities">
-						<td>{{activity.name}}</td>
-						<td>{{activity.startDateLabelFunc()}}</td>
-						<td>{{activity.endDateLabelFunc()}}</td>
-						<td>{{activity.users.length}}</td>
-						<td>{{activity.status}}</td>
+					<tr uku-repeat="testing in mgr.testings">
+						<td>{{testing.name}}</td>
+						<td>{{testing.status}}</td>
 						<td>
-						<button class="btn btn-default" uku-onclick="parent.mgr.setEditActivity(activity)">
-							Edit
-						</button>
-						<button class="btn btn-default" uku-onclick="parent.mgr.removeActivity(activity._id)">
-							Delete
-						</button></td>
+							<button class="btn btn-default" uku-onclick="parent.mgr.setEditTesting(testing)">
+								Edit
+							</button>
+							<button class="btn btn-default" uku-onclick="parent.mgr.removeTesting(testing.id)">
+								Delete
+							</button>
+						</td>
 					</tr>
 				</tbody>
 			</thead>
@@ -50,30 +46,23 @@
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
-						<h4 class="modal-title" id="createModalLabel">Create Activity</h4>
+						<h4 class="modal-title" id="createModalLabel">Create Testing</h4>
 					</div>
 					<div class="modal-body">
 						<form>
 							<div class="form-group">
-								<label for="nameInput">Activity Name</label>
-								<input type="text" class="form-control" id="nameInput" placeholder="Enter the new activity name" uku-value="mgr.newActivity.name">
+								<label for="nameInput">Testing Name</label>
+								<input type="text" class="form-control" id="nameInput" placeholder="Enter the new testing name" uku-value="mgr.newTesting.name">
 							</div>
 							<div class="form-group">
-								<label for="startDateInput">Start Date</label>
-								<input type="date" class="form-control" id="startDateInput" uku-value="mgr.newActivity.startDate">
-							</div>
-							<div class="form-group">
-								<label for="endDateInput">End Date</label>
-								<input type="date" class="form-control" id="endDateInput" uku-value="mgr.newActivity.endDate">
-							</div>
-							<div class="form-group">
-								<label for="limitInput">Limit</label>
-								<input type="number" min="1" class="form-control" id="limitDateInput" uku-value="mgr.newActivity.limit">
+								<label for="descInput">Description</label>
+								<textarea id="descInput" class="form-control" rows="3" uku-value="mgr.newTesting.description"></textarea>
+								<!--<input type="text" class="form-control" id="nameInput" placeholder="Enter the description" uku-value="mgr.newTesting.name">-->
 							</div>
 							<div class="form-group">
 								<label for="statusInput">Status</label>
-								<select uku-value="mgr.newActivity.status">
-								  <option uku-repeat="status in mgr.statusEnum" uku-value ="status.value">{{status.name}}</option>
+								<select uku-selectedItem="mgr.newTesting.status">
+									<option uku-repeat="status in mgr.statusEnum" uku-value ="status.value"  uku-data-item="status">{{status.name}}</option>
 								</select>
 							</div>
 						</form>
@@ -82,7 +71,7 @@
 						<button type="button" class="btn btn-default" data-dismiss="modal">
 							Close
 						</button>
-						<button type="button" class="btn btn-primary" uku-onclick="mgr.createActivity()">
+						<button type="button" class="btn btn-primary" uku-onclick="mgr.createTesting()">
 							Create
 						</button>
 					</div>
@@ -97,25 +86,24 @@
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
-						<h4 class="modal-title" id="editModalLabel">Create Activity</h4>
+						<h4 class="modal-title" id="editModalLabel">Edit Testing</h4>
 					</div>
 					<div class="modal-body">
 						<form>
 							<div class="form-group">
-								<label for="editNameInput">Activity Name</label>
-								<input type="text" class="form-control" id="editNameInput" placeholder="Enter the new activity name" uku-value="mgr.editActivity.name">
+								<label for="editNameInput">Testing Name</label>
+								<input type="text" class="form-control" id="editNameInput" uku-value="mgr.editTesting.name">
 							</div>
 							<div class="form-group">
-								<label for="editStartDateInput">Start Date</label>
-								<input type="date" class="form-control" id="editStartDateInput" uku-value="mgr.editActivity.startDateLabelFunc()">
+								<label for="editDescInput">Description</label>
+								<textarea id="editDescInput" class="form-control" rows="3" uku-value="mgr.editTesting.description"></textarea>
+								<!-- <input type="text" class="form-control" id="nameInput" placeholder="Enter the description" uku-value="mgr.newTesting.name"> -->
 							</div>
 							<div class="form-group">
-								<label for="editEndDateInput">End Date</label>
-								<input type="date" class="form-control" id="editEndDateInput" uku-value="mgr.editActivity.endDateLabelFunc()">
-							</div>
-							<div class="form-group">
-								<label for="editLimitDateInput">Limit</label>
-								<input type="number" min="1" class="form-control" id="editLimitDateInput" uku-value="mgr.editActivity.limit">
+								<label for="statusInput">Status</label>
+								<select uku-selectedItem="mgr.editTesting.status">
+									<option uku-repeat="status in mgr.statusEnum" uku-value ="status.value"  uku-data-item="status">{{status.name}}</option>
+								</select>
 							</div>
 						</form>
 					</div>
@@ -123,7 +111,7 @@
 						<button type="button" class="btn btn-default" data-dismiss="modal">
 							Close
 						</button>
-						<button type="button" class="btn btn-primary" uku-onclick="mgr.updateActivity()">
+						<button type="button" class="btn btn-primary" uku-onclick="mgr.updateTesting()">
 							Modify
 						</button>
 					</div>
@@ -133,49 +121,79 @@
 	</body>
 	<script>
 		function ManagementController() {
-			this.activities = [];
+			this.testings = [];
 			var self = this;
-			this.getActivites = function() {
-				$.get("/activity", function(data) {
-					var arr =[];
-					for(var i=0;i<data.length;i++){
-						var actvity = new Activity();
-						actvity.convertModel2Entity(data[i]);
-						arr.push(actvity);
+			this.getTestings = function() {
+				$.get("/testing", function(data) {
+					var arr = [];
+					for (var i = 0; i < data.length; i++) {
+						var testing = new Testing();
+						testing.convertModel2Entity(data[i]);
+						arr.push(testing);
 					}
-					self.activities = arr;
+					self.testings = arr;
+					self.uku.refresh();
 				});
 			};
-			this.createActivity = function() {
-				$.post("/activity", self.newActivity, function(data) {
+			this.createTesting = function() {
+				$.post("/testing", self.newTesting, function(data) {
 					$('#createModal').modal('hide');
-					self.getActivites();
+					self.getTestings();
+					self.uku.refresh();
 				});
 			};
-			this.newActivity = new Activity;
-			this.editActivity = undefined;
-			this.removeActivity = function(id) {
-				$.ajax({url: "/activity/"+id,type:"DELETE",success:function(){
-					self.getActivites();
-				}});
+			
+			this.updateTesting = function() {
+				
+				$.ajax({
+						url : "/testing/",
+						type : "PUT",
+						data: self.editTesting,
+						success : function() {
+							$('#editModal').modal('hide');
+							self.getTestings();
+						}
+					});
+				
 			};
-			this.setEditActivity = function(activity){
-				this.editActivity = activity;
-				this.editActivity.startDate = activity.startDate.split("T")[0];
+			this.newTesting = new Testing;
+			this.editTesting = undefined;
+			this.removeTesting = function(id) {
+				$.ajax({
+					url : "/testing/" + id,
+					type : "DELETE",
+					success : function() {
+						self.getTestings();
+					}
+				});
+			};
+			this.setEditTesting = function(testing) {
+				this.editTesting = _.clone(testing);
+				this.editTesting.uku = null;
 				$('#editModal').modal('toggle');
+				this.uku.refresh();
 			};
-			this.statusEnum = [{"name":"pending","value":"pending"},
-							{"name":"running","value":"running"},
-							{"name":"suspended","value":"suspended"},
-							{"name":"over","value":"over"}];
+			this.statusEnum = [{
+				"name" : "pending",
+				"value" : "pending"
+			}, {
+				"name" : "running",
+				"value" : "running"
+			}, {
+				"name" : "suspended",
+				"value" : "suspended"
+			}, {
+				"name" : "over",
+				"value" : "over"
+			}];
 		}
 
-
+		var uku;
 		$(document).ready(function() {
-			var uku = new Ukulele();
+			uku = new Ukulele();
 			var mgr = new ManagementController();
 			uku.registerController("mgr", mgr);
-			mgr.getActivites();
+			mgr.getTestings();
 			uku.init();
 		});
 

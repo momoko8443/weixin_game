@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var app = express();
 var Models = require('./database/Models');
-var Activity = Models.Activity;
+var Testing = Models.Testing;
 mongoose.connect('mongodb://127.0.0.1/weixin');
 var db = mongoose.connection;
 
@@ -25,13 +25,14 @@ app.use(bodyParser.urlencoded({
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.query());
 app.use(bodyParser.urlencoded({ extended: true }));
-
+/*
 var appID = "wx86280d314fb1fd70";
 var secret = "bb185ab1918499b43069517667abbac7";
 var redirect_url = "http://momoko8443.tunnel.mobi/";
 var getCodeUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appID+"&redirect_uri="+redirect_url+"&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect";
 
 var access_token;
+
 
 app.use('/connect',wechat('ukulele',function(req,res,next){
 	var message = req.weixin;
@@ -102,10 +103,11 @@ app.get('/user/:openid',function(req,res){
         console.error(e);
     });
     
-});
+});*/
 
-app.get('/activity',function(req,res){
-    Activity.find(function(err,result){
+
+app.get('/testing',function(req,res){
+    Testing.find(function(err,result){
         if(err){
             console.error(err);
         }else{
@@ -115,22 +117,20 @@ app.get('/activity',function(req,res){
     
 });
 
-app.post('/activity',function(req,res){
+app.post('/testing',function(req,res){
     var a_name = req.body.name;
     var a_description = req.body.description;
-    var a_startDate = req.body.startDate;
-    var a_endDate = req.body.endDate;
-    var a_limit = req.body.limit;
     var a_status = req.body.status;
-    var activity = new Activity({
+    var a_questions = req.body.questions;
+    var a_results = req.body.results;
+    var testing = new Testing({
         name:a_name,
 		description:a_description,
-		startDate: a_startDate,
-		endDate:a_endDate,
 		status:a_status,
-		limit:a_limit
+		questions:a_questions,
+		results:a_results
     });
-	activity.save(function(err,activity){
+	testing.save(function(err,testing){
 		if(err){
 			res.send(err);
 		}else{
@@ -139,10 +139,12 @@ app.post('/activity',function(req,res){
 	});
 });
 
-app.put('/activity',function(req,res){
-	var query = { name: req.body.name };
-	var updateActitvity = req.body;
-	Activity.findOneAndUpdate(query, updateActitvity, function(err,activity){
+app.put('/testing',function(req,res){
+	var query = { "_id": req.body.id };
+	console.log(query);
+	var updateTesting =  { $set:req.body};
+	console.log(updateTesting);
+	Testing.findOneAndUpdate(query, updateTesting, function(err,testing){
 		if(err){
 			res.send(err);
 		}else{
@@ -151,9 +153,9 @@ app.put('/activity',function(req,res){
 	});
 });
 
-app.delete('/activity/:id',function(req,res){
+app.delete('/testing/:id',function(req,res){
 	var query = {_id: req.params.id};
-	Activity.remove(query,function(err){
+	Testing.remove(query,function(err){
 		if(err){
 			res.send(err);
 		}else{
