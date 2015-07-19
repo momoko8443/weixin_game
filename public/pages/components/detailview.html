@@ -1,0 +1,48 @@
+<div class="panel panel-default" style="margin: 10px">
+	<div class="panel-heading">
+		<label>{{mgr.editTesting.name}}</label>
+		<button type="button" class="btn btn-success" style="float: right">
+			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+		</button>
+	</div>
+	<div class="panel-body">
+		<div uku-repeat="question in mgr.editTesting.questions">
+			<form >
+				<div class="form-group">
+					<label for="questionNameInput">Question Name</label>
+					<input type="text" class="form-control" id="questionNameInput" uku-value="question.name">
+				</div>
+				<div class="form-group">
+					<label for="questionDescInput">Description</label>
+					<textarea id="questionDescInput" class="form-control" rows="3" uku-value="question.desctription"></textarea>
+				</div>
+				<div class="form-group">
+					<label for="isMultipleInput">Multiple Choose</label>
+					<input type="checkbox" uku-vlaue="question.isMultiple">
+				</div>
+			</form>
+			<div class="alert alert-success" uku-repeat="option in question.options">
+				<form>
+					<div class="form-group">
+						<label for="optionNameInput">Option Name</label>
+						<input type="text" class="form-control" id="optionNameInput" uku-value="option.name">
+					</div>
+					<div >
+						<label for="optionScoreInput">Score</label>
+						<input type="number" class="form-control" id="optionScoreInput" uku-value="option.score">
+					</div>
+
+				</form>
+			</div>
+			<button>
+				Add Option
+			</button>
+		</div>
+		<button>
+			Add Question
+		</button>
+		<button uku-onclick="mgr.back2ListView()">
+			Back
+		</button>
+	</div>
+</div>

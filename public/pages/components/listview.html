@@ -1,0 +1,35 @@
+<div class="panel panel-default" style="margin: 10px">
+	<div class="panel-heading">
+		<label> All Testings </label>
+		<button type="button" class="btn btn-success" data-toggle="modal" data-target="#createModal" style="float: right">
+			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+		</button>
+	</div>
+	<div class="panel-body">
+		<table class="table table-bordered table-hover table-condensed">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Status</th>
+					<th>Action</th>
+				</tr>
+				<tbody>
+					<tr uku-repeat="testing in mgr.testings">
+						<td>{{testing.name}}</td>
+						<td>{{testing.status}}</td>
+						<td>
+						<button class="btn btn-success" uku-onclick="parent.mgr.editDetail(testing)">
+							<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+						</button>
+						<button class="btn btn-info" uku-onclick="parent.mgr.setEditTesting(testing)">
+							<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+						</button>
+						<button class="btn btn-danger" uku-onclick="parent.mgr.removeTesting(testing.id)">
+							<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+						</button></td>
+					</tr>
+				</tbody>
+			</thead>
+		</table>
+	</div>
+</div>

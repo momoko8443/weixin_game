@@ -11,33 +11,19 @@
 		<script src="../jslib/lodash/lodash.min.js"></script>
 	</head>
 	<body uku-application>
-		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">
-			Create New Testing
-		</button>
-		<h4>All Acticities</h4>
-		<table class="table table-bordered table table-hover table-condensed">
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>Status</th>
-					<th>Action</th>
-				</tr>
-				<tbody>
-					<tr uku-repeat="testing in mgr.testings">
-						<td>{{testing.name}}</td>
-						<td>{{testing.status}}</td>
-						<td>
-							<button class="btn btn-default" uku-onclick="parent.mgr.setEditTesting(testing)">
-								Edit
-							</button>
-							<button class="btn btn-default" uku-onclick="parent.mgr.removeTesting(testing.id)">
-								Delete
-							</button>
-						</td>
-					</tr>
-				</tbody>
-			</thead>
-		</table>
+		<ul class="nav nav-tabs" role="tablist" id="myTab" style="display: none">
+	    	<li role="presentation" class="active"><a href="#listView" aria-controls="listView" role="tab" data-toggle="tab">listView</a></li>
+	    	<li role="presentation"><a href="#detailView" aria-controls="detailView" role="tab" data-toggle="tab">detailView</a></li>
+	    </ul>
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane fade in active" id="listView">
+				<div class="uku-include" src="components/listview.html"></div>
+			</div>
+			<div role="tabpanel" class="tab-pane fade" id="detailView">
+				<div class="uku-include" src="components/detailview.html"></div>
+			</div>
+		</div>
+
 		<!--Create Modal -->
 		<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
@@ -132,29 +118,36 @@
 						arr.push(testing);
 					}
 					self.testings = arr;
-					self.uku.refresh();
+					uku.refresh();
 				});
 			};
 			this.createTesting = function() {
 				$.post("/testing", self.newTesting, function(data) {
 					$('#createModal').modal('hide');
 					self.getTestings();
-					self.uku.refresh();
+					uku.refresh();
 				});
 			};
+
+			this.editDetail = function(testing) {
+				$('#myTab a:last').tab('show');
+			};
 			
+			this.back2ListView = function(){
+				$('#myTab a:first').tab('show');
+			};
+
 			this.updateTesting = function() {
-				
 				$.ajax({
-						url : "/testing/",
-						type : "PUT",
-						data: self.editTesting,
-						success : function() {
-							$('#editModal').modal('hide');
-							self.getTestings();
-						}
-					});
-				
+					url : "/testing/",
+					type : "PUT",
+					data : self.editTesting,
+					success : function() {
+						$('#editModal').modal('hide');
+						self.getTestings();
+					}
+				});
+
 			};
 			this.newTesting = new Testing;
 			this.editTesting = undefined;
@@ -169,9 +162,8 @@
 			};
 			this.setEditTesting = function(testing) {
 				this.editTesting = _.clone(testing);
-				this.editTesting.uku = null;
 				$('#editModal').modal('toggle');
-				this.uku.refresh();
+				uku.refresh();
 			};
 			this.statusEnum = [{
 				"name" : "pending",
