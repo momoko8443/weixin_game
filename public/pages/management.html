@@ -207,12 +207,16 @@
 				});
 			};
 			
-			this.removeQuestion = function(id) {
+			this.removeQuestion = function(question) {
+				var testingId = this.editTesting.id;
 				$.ajax({
-					url : "/testing/" + id,
+					url : "/testing/"+this.editTesting.id+"/question"/+question._id,
 					type : "DELETE",
 					success : function() {
-						self.getTestings();
+						self.getTestingById(testingId,function(data){
+							self.editTesting = data;
+							uku.refresh();
+						});
 					}
 				});
 			};
