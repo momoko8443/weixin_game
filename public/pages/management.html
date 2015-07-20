@@ -8,6 +8,7 @@
 		<script src="../jslib/bootstrap/js/bootstrap.min.js"></script>
 		<script src="../jslib/ukulele/ukulele.js"></script>
 		<script src="../js/Testing.js"></script>
+		<script src="../js/Question.js"></script>
 		<script src="../jslib/lodash/lodash.min.js"></script>
 	</head>
 	<body uku-application>
@@ -25,7 +26,7 @@
 		</div>
 
 		<!--Create Modal -->
-		<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
+		<div class="modal fade" id="createTestingModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -121,15 +122,38 @@
 					uku.refresh();
 				});
 			};
+			
+			this.getTestingById = function(id,retFunc){
+				$.get("/testing/"+this.editTesting.id, function(data) {
+					retFunc(data);
+				});
+			};
+			
+			this.beforeOpenCreateTestingPanel = function(){
+				this.newTesting = new Testing();
+				$("#createTestingModal").modal("show");
+			};
 			this.createTesting = function() {
 				$.post("/testing", self.newTesting, function(data) {
-					$('#createModal').modal('hide');
+					$('#createTestingModal').modal('hide');
 					self.getTestings();
 					uku.refresh();
 				});
 			};
 
-			this.editDetail = function(testing) {
+			this.showDetailView = function(testing) {
+				this.editTesting = _.clone(testing);
+				if(this.editTesting.questions.length === 1){
+					if(this.editTesting.questions[0] === ""){
+						this.editTesting.questions.pop();
+					}
+				}
+				if(this.editTesting.results.length === 1){
+					if(this.editTesting.results[0] === ""){
+						this.editTesting.results.pop();
+					}
+				}
+				uku.refresh();
 				$('#myTab a:last').tab('show');
 			};
 			
@@ -141,7 +165,7 @@
 				$.ajax({
 					url : "/testing/",
 					type : "PUT",
-					data : self.editTesting,
+					data : this.editTesting,
 					success : function() {
 						$('#editModal').modal('hide');
 						self.getTestings();
@@ -149,7 +173,7 @@
 				});
 
 			};
-			this.newTesting = new Testing;
+			this.newTesting = undefined;
 			this.editTesting = undefined;
 			this.removeTesting = function(id) {
 				$.ajax({
@@ -160,11 +184,39 @@
 					}
 				});
 			};
-			this.setEditTesting = function(testing) {
+			this.beforeOpenEditTestingPanel = function(testing) {
 				this.editTesting = _.clone(testing);
 				$('#editModal').modal('toggle');
 				uku.refresh();
 			};
+			
+			this.newQuestion = undefined;		
+			this.beforOpenCreateQuestionPanel = function(){
+				this.newQuestion =  new Question();
+				$("#createQuestionModal").modal("show");
+			};
+			
+			this.createQuestion = function(){
+				var testingId = this.editTesting.id;
+				$.post("/testing/"+testingId+"/question", this.newQuestion, function(data) {
+					self.getTestingById(testingId,function(data){
+						self.editTesting = data;
+						uku.refresh();
+						$('#createQuestionModal').modal('hide');
+					});
+				});
+			};
+			
+			this.removeQuestion = function(id) {
+				$.ajax({
+					url : "/testing/" + id,
+					type : "DELETE",
+					success : function() {
+						self.getTestings();
+					}
+				});
+			};
+			
 			this.statusEnum = [{
 				"name" : "pending",
 				"value" : "pending"

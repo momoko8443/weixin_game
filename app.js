@@ -105,7 +105,7 @@ app.get('/user/:openid',function(req,res){
     
 });*/
 
-
+//get testings's list
 app.get('/testing',function(req,res){
     Testing.find(function(err,result){
         if(err){
@@ -113,10 +113,20 @@ app.get('/testing',function(req,res){
         }else{
             res.send(result);
         }
-    });
-    
+    }); 
 });
 
+app.get('/testing/:id',function(req,res){
+	var id = req.params.id;
+	Testing.findOne({"_id":id},function(err,result){
+        if(err){
+            console.error(err);
+        }else{
+            res.send(result);
+        }
+    }); 
+});
+//create a new testing
 app.post('/testing',function(req,res){
     var a_name = req.body.name;
     var a_description = req.body.description;
@@ -127,8 +137,6 @@ app.post('/testing',function(req,res){
         name:a_name,
 		description:a_description,
 		status:a_status,
-		questions:a_questions,
-		results:a_results
     });
 	testing.save(function(err,testing){
 		if(err){
@@ -138,7 +146,18 @@ app.post('/testing',function(req,res){
 		}
 	});
 });
-
+//remove an existed testing
+app.delete('/testing/:id',function(req,res){
+	var query = {_id: req.params.id};
+	Testing.remove(query,function(err){
+		if(err){
+			res.send(err);
+		}else{
+			res.send("success");
+		}
+	});
+});
+//modify an existed testing
 app.put('/testing',function(req,res){
 	var query = { "_id": req.body.id };
 	console.log(query);
@@ -153,9 +172,33 @@ app.put('/testing',function(req,res){
 	});
 });
 
-app.delete('/testing/:id',function(req,res){
-	var query = {_id: req.params.id};
-	Testing.remove(query,function(err){
+//add a new question to an existed testing
+app.post('/testing/:id/question',function(req,res){
+	var test_id = req.params.id;
+	var newQuestion = req.body;
+	var query = { "_id": test_id };
+	Testing.findOne(query,function(err,testing){
+		if(err){
+			res.send(err);
+		}else{
+			testing.questions.push(newQuestion);
+			testing.save(function(err2){
+				if(err2){
+					res.send(err2);
+				}else{
+					res.send("success");
+				}
+			});		
+		}
+	});
+});
+
+//add a new question to an existed testing
+app.delete('/testing/:id/question/:qid',function(req,res){
+	var test_id = req.params.id;
+	var questions = req.body;
+	var query = { "_id": test_id };
+	Testing.findOneAndUpdate(query, {$set:{"questions":questions}}, function(err,testing){
 		if(err){
 			res.send(err);
 		}else{
@@ -163,6 +206,8 @@ app.delete('/testing/:id',function(req,res){
 		}
 	});
 });
+
+
 
 var server = app.listen(port,function () {
     console.log('Listening on port %d', server.address().port);
