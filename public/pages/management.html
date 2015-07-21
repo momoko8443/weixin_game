@@ -190,10 +190,17 @@
 				uku.refresh();
 			};
 			
-			this.newQuestion = undefined;		
+			this.newQuestion = undefined;	
+			this.editQuestion = undefined;
 			this.beforOpenCreateQuestionPanel = function(){
 				this.newQuestion =  new Question();
 				$("#createQuestionModal").modal("show");
+			};
+			
+			this.beforeOpenEditQuestionPanel = function(question) {
+				this.editQuestion = _.clone(question);
+				$('#editQuestionModal').modal('toggle');
+				uku.refresh();
 			};
 			
 			this.createQuestion = function(){
@@ -209,8 +216,9 @@
 			
 			this.removeQuestion = function(question) {
 				var testingId = this.editTesting.id;
+				var url = "/testing/"+this.editTesting.id+"/question/"+question._id;
 				$.ajax({
-					url : "/testing/"+this.editTesting.id+"/question"/+question._id,
+					url : url,
 					type : "DELETE",
 					success : function() {
 						self.getTestingById(testingId,function(data){
