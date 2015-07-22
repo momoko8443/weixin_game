@@ -112,19 +112,13 @@
 			var self = this;
 			this.getTestings = function() {
 				$.get("/testing", function(data) {
-					var arr = [];
-					for (var i = 0; i < data.length; i++) {
-						var testing = new Testing();
-						testing.convertModel2Entity(data[i]);
-						arr.push(testing);
-					}
-					self.testings = arr;
+					self.testings = data;
 					uku.refresh();
 				});
 			};
 			
 			this.getTestingById = function(id,retFunc){
-				$.get("/testing/"+this.editTesting.id, function(data) {
+				$.get("/testing/"+id, function(data) {
 					retFunc(data);
 				});
 			};
@@ -204,7 +198,7 @@
 			};
 			
 			this.createQuestion = function(){
-				var testingId = this.editTesting.id;
+				var testingId = this.editTesting._id;
 				$.post("/testing/"+testingId+"/question", this.newQuestion, function(data) {
 					self.getTestingById(testingId,function(data){
 						self.editTesting = data;
@@ -213,6 +207,23 @@
 					});
 				});
 			};
+            
+            this.updateQuestion = function() {
+                var testingId = this.editTesting._id;
+				var url = "/testing/"+testingId+"/question/"+this.editQuestion._id;
+				$.ajax({
+					url : url,
+					type : "PUT",
+                    data : self.editQuestion,
+					success : function() {
+						self.getTestingById(testingId,function(data){
+							self.editTesting = data;
+							uku.refresh();
+                            $('#editQuestionModal').modal('hide');
+						});
+					}
+				});
+            }
 			
 			this.removeQuestion = function(question) {
 				var testingId = this.editTesting.id;

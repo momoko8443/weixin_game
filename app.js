@@ -119,12 +119,10 @@ app.delete('/testing/:id/question/:qid',function(req,res){
 	var testing_id = req.params.id;
 	var question_id = req.params.qid;
 	var query = { "_id": testing_id };
-	console.log("delete question----------------------");
 	Testing.findOne(query,function(err,testing){
 		if(err){
 			res.send(err);
 		}else{
-			console.log(testing);
 			testing.questions.id(question_id).remove();
 			testing.save(function(err2){
 				if(err2){
@@ -135,6 +133,35 @@ app.delete('/testing/:id/question/:qid',function(req,res){
 			});		
 		}
 	});
+});
+
+//modify a existed question
+app.put('/testing/:id/question/:qid',function(req,res){
+	var testing_id = req.params.id;
+	var question_id = req.params.qid;
+    var question = req.body;
+	var query = { "_id": testing_id , "questions._id":question_id};
+    var data = {$set:
+                {"questions.$.name":question.name,
+                 "questions.$.description":question.description,
+                 "questions.$.isMultiple":question.isMultiple
+                }};
+    Testing.update(query,data,function(err,testing){
+		if(err){
+			res.send(err);
+		}else{
+			res.send("success");
+		}
+	});
+    
+    
+	/*Testing.findOneAndUpdate(query,{"$set" :{ "questions.$":question}},function(err,testing){
+		if(err){
+			res.send(err);
+		}else{
+			res.send("success");	
+		}
+	});*/
 });
 
 
