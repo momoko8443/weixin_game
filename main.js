@@ -16,7 +16,7 @@ require.config({
     }
 });
 
-require(["jquery","ukulele","MyController","jquery.bootstrap","highlight","locale"], function($,Ukulele,MyController) {
+require(["jquery","ukulele","MyController","jquery.bootstrap","locale"], function($,Ukulele,MyController) {
 
 	var ishljsInitial = false;
 	var uku;
