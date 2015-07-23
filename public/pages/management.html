@@ -4,19 +4,19 @@
 	<head>
 		<title>Management Page</title>
 		<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
-		<script data-main="../main" src="../bower_components/requirejs/require.js"></script>
+		<script data-main="../js/main" src="../bower_components/requirejs/require.js"></script>
 	</head>
 	<body uku-application>
 		<ul class="nav nav-tabs" role="tablist" id="myTab" style="display: none">
-	    	<li role="presentation" class="active"><a href="#listView" aria-controls="listView" role="tab" data-toggle="tab">listView</a></li>
-	    	<li role="presentation"><a href="#detailView" aria-controls="detailView" role="tab" data-toggle="tab">detailView</a></li>
+	    	<li role="presentation" class="active"><a href="#testingTab" aria-controls="testingTab" role="tab" data-toggle="tab">testingTab</a></li>
+	    	<li role="presentation"><a href="#questionTab" aria-controls="questionTab" role="tab" data-toggle="tab">questionTab</a></li>
 	    </ul>
 		<div class="tab-content">
-			<div role="tabpanel" class="tab-pane fade in active" id="listView">
-				<div class="uku-include" src="components/listview.html"></div>
+			<div role="tabpanel" class="tab-pane fade in active" id="testingTab">
+				<div id="testingTab" class="uku-include" src="components/testing_view.html"></div>
 			</div>
-			<div role="tabpanel" class="tab-pane fade" id="detailView">
-				<div class="uku-include" src="components/detailview.html"></div>
+			<div role="tabpanel" class="tab-pane fade" id="questionTab">
+				<div id="questionView" class="uku-include" load="false" src="components/question_view.html"></div>
 			</div>
 		</div>
 
