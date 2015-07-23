@@ -29,18 +29,21 @@ define("TestingManagementController",["Testing","QuestionManagementController","
 				});
 			};
 			var questionMgrCtrl;
-			this.showDetailView = function(testing) {
-				var editTesting = _.clone(testing);
-				if(!questionMgrCtrl){
-					questionMgrCtrl = new QuestionManagementController(uku);
-					questionMgrCtrl.editTesting = editTesting;
-					uku.registerController("mgr2",questionMgrCtrl);
-					uku.loadIncludeElement($("#questionView"));
-				}else{
-					questionMgrCtrl.editTesting = editTesting;
-				}
-				uku.refresh();			
-				$('#myTab a:last').tab('show');
+			this.showQuestionView = function(testingId) {
+				this.getTestingById(testingId,function(testing){
+					var editTesting = _.clone(testing);
+					if(!questionMgrCtrl){
+						questionMgrCtrl = new QuestionManagementController(uku);
+						questionMgrCtrl.editTesting = editTesting;
+						uku.registerController("mgr2",questionMgrCtrl);
+						uku.loadIncludeElement($("#questionView"));
+					}else{
+						questionMgrCtrl.editTesting = editTesting;
+					}
+					uku.refresh();			
+					$('#myTab a:last').tab('show');
+				});
+				
 			};
 			
 			this.updateTesting = function() {

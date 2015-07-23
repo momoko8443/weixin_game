@@ -20,7 +20,7 @@
 			<tbody>
 				<tr uku-repeat="question in mgr2.editTesting.questions">
 					<td>{{question.name}}</td>
-                    <td>{{question.isMultiple}}</td>
+                    <td>{{parent.mgr2.labelFunction(question)}}</td>
 					<td>
 						<button class="btn btn-success">
 							<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>

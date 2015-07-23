@@ -44,5 +44,13 @@ define("QuestionManagementController",["Question","questionService"],function(Qu
 				uku.refresh();
 			});	
 		};
+		
+		this.labelFunction = function(question) {
+			if(question.isMultiple){
+				return "Yes";
+			}else{
+				return "No";
+			}
+		};
 	};
 });
