@@ -52,5 +52,13 @@ define("QuestionManagementController",["Question","questionService"],function(Qu
 				return "No";
 			}
 		};
+		
+		this.beforeOpenCreateOptionPanel = function(){
+			
+		};
+		
+		this.showOptions = function(question) {
+			this.editQuestion = _.clone(question);
+		};
 	};
 });

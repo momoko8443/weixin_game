@@ -303,6 +303,8 @@
 			boundAttr.renderRepeat(controllerInst);
 		}
 	}
+	
+	//根据attrName 确定对应的ControllerModel ，比如  parent.mgr.xxx.yyy来找到以mgr为别名的ControllerModel
 	function getBoundControllerModelByName(attrName) {
 		var instanceName = UkuleleUtil.getBoundModelInstantName(attrName);
 		var controllerModel = controllersDefinition[instanceName];
@@ -591,7 +593,7 @@ ObjectUtil.deepClone = function(obj){
 function UkuleleUtil() {
 	'use strict';
 }
-
+//一串对象属性引用表达式，去掉 parent 以及 control alias部分后剩下的内容
 UkuleleUtil.getFinalAttribute = function(expression) {
 	var temp = expression.split(".");
 	var isParent = temp.shift();
@@ -600,32 +602,32 @@ UkuleleUtil.getFinalAttribute = function(expression) {
 	}
 	return temp.join(".");
 };
-
+//检查字符串中是否有 uku- 字符出现
 UkuleleUtil.searchUkuAttrTag = function(htmlString) {
 	var re = /^uku\-.*/;
 	var index = htmlString.search(re);
 	return index;
 };
-
+//检测是否是一个由 {{}} 包裹的表达式
 UkuleleUtil.searchUkuExpTag = function(expression) {
 	var re = /^\{\{.*\}\}$/;
 	var index = expression.search(re);
 	return index;
 };
-
+//检测是否是一个函数格式  如  functionName()
 UkuleleUtil.searchUkuFuncArg = function(htmlString) {
 	var re = /\(.*\)$/;
 	var index = htmlString.search(re);
 	return index;
 };
-
+//element是否本身是一个 repeat
 UkuleleUtil.isRepeat = function($element) {
 	if ($element.attr("uku-repeat")) {
 		return true;
 	}
 	return false;
 };
-
+//element是否在一个repeat循环体内
 UkuleleUtil.isInRepeat = function($element) {
 	var parents = $element.parents();
 	for (var i = 0; i < parents.length; i++) {
