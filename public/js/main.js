@@ -3,7 +3,7 @@ require.config({
         "jquery": '../bower_components/jquery/dist/jquery.min',
         "jquery.bootstrap": '../bower_components/bootstrap/dist/js/bootstrap.min',
         "lodash": '../bower_components/lodash/lodash.min',
-        "ukulele": '../bower_components/ukulelejs/build/js/ukulele',
+        "ukulele": '../jslib/ukulele/ukulele',
         "Question": 'models/Question',
         "Testing": 'models/Testing',
         "TestingManagementController": 'controllers/TestingManagementController',
