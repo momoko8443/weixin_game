@@ -6,6 +6,7 @@ require.config({
         "ukulele": '../jslib/ukulele/ukulele',
         "Question": 'models/Question',
         "Testing": 'models/Testing',
+        "Option": 'models/Option',
         "TestingManagementController": 'controllers/TestingManagementController',
         "QuestionManagementController": 'controllers/QuestionManagementController',
         "testingService":'services/TestingService',

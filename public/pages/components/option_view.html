@@ -1,33 +1,20 @@
 <div class="panel panel-default" style="margin: 10px">
 	<div class="panel-heading">
-		<label>Options</label>
-		<button type="button" class="btn btn-success" style="float: right" uku-onclick="mgr2.beforeOpenCreateOptionPanel()">
+		<label>{{mgr2.optionsPanelTitle()}}</label>
+		<button type="button" class="btn btn-success" style="float: right" uku-onclick="mgr2.addOptionItem()">
 			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 		</button>
 	</div>
 	<div class="panel-body">
-		<table class="table table-bordered table-hover table-condensed">
-            <thead>
-				<tr>
-					<th>Name</th>
-					<th>Score</th>
-					<th>Action</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr uku-repeat="option in mgr2.editQuestion.options">
-					<td>{{option.name}}</td>
-                    <td>{{option.score}}</td>
-					<td>
-						<button class="btn btn-info">
-							<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-						</button>
-						<button class="btn btn-danger">
-							<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-						</button>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+		<ol>
+			<li uku-repeat="option in mgr2.editQuestion.options">
+				<div class="uku-include" src="components/renderer/optionItemRenderer.html"></div>
+			</li>
+		</ol>
+		<ol>
+			<li uku-repeat="option in mgr2.addOptions">
+				<div class="uku-include" src="components/renderer/optionItemEditor.html"></div>
+			</li>
+		</ol>
     </div>
 </div>
