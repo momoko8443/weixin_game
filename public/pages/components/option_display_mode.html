@@ -1,0 +1,15 @@
+<div class="panel panel-default" style="margin: 10px">
+	<div class="panel-heading">
+		<label>{{mgr2.optionsPanelTitle()}}</label>	
+		<button id="editModeBtn" class="btn btn-success" style="float: right;margin-right: 8px" uku-disabled="mgr2.isAllowEditOption()" uku-onclick="mgr2.switch2EditMode()">
+			<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+		</button>
+	</div>
+	<div class="panel-body">
+		<ul>
+			<li uku-repeat="option in mgr2.editQuestion.options">
+				<div class="uku-include" src="components/renderer/optionItemRenderer.html"></div>
+			</li>
+		</ul>
+    </div>
+</div>

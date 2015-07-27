@@ -1,28 +1,12 @@
-<div class="panel panel-default" style="margin: 10px">
-	<div class="panel-heading">
-		<label>{{mgr2.optionsPanelTitle()}}</label>	
-		<button id="editModeBtn" class="btn btn-success" style="float: right;margin-right: 8px" uku-disabled="mgr2.isAllowEditOption()" uku-onclick="mgr2.editOptions()">
-			<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-		</button>
-		
-		<button id="addOptionBtn" type="button" class="btn btn-success" style="float: right;margin-right: 8px;display: none" 
-		uku-onclick="mgr2.addOptionItem()">
-			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-		</button>
-		<button id="updateOptionsBtn" class="btn btn-success" style="float: right;margin-right: 8px;display: none" uku-onclick="mgr2.updateOption()">
-			<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>
-		</button>
+<ul class="nav nav-tabs" role="tablist" id="myTab2" style="display: none">
+	<li role="presentation" class="active"><a href="#displayMode" aria-controls="displayMode" role="tab" data-toggle="tab">displayMode</a></li>
+	<li role="presentation"><a href="#editMode" aria-controls="editMode" role="tab" data-toggle="tab">editMode</a></li>
+</ul>
+<div class="tab-content">
+	<div role="tabpanel" class="tab-pane fade in active" id="displayMode">
+		<div class="uku-include" src="components/option_display_mode.html"></div>
 	</div>
-	<div class="panel-body">
-		<!-- <ul>
-			<li uku-repeat="option in mgr2.editQuestion.options">
-				<div class="uku-include" src="components/renderer/optionItemRenderer.html"></div>
-			</li>
-		</ul> -->
-		<ul>
-			<li uku-repeat="option in mgr2.addOptions">
-				<div class="uku-include" src="components/renderer/optionItemEditor.html"></div>
-			</li>
-		</ul>
-    </div>
+	<div role="tabpanel" class="tab-pane fade" id="editMode">
+		<div class="uku-include" src="components/option_edit_mode.html"></div>
+	</div>
 </div>

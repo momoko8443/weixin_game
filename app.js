@@ -165,7 +165,8 @@ app.put('/testing/:id/question/:qid', function(req, res) {
 		$set : {
 			"questions.$.name" : question.name,
 			"questions.$.description" : question.description,
-			"questions.$.isMultiple" : question.isMultiple
+			"questions.$.isMultiple" : question.isMultiple,
+			"questions.$.options" : question.options
 		}
 	};
 	

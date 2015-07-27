@@ -80,10 +80,8 @@ define("QuestionManagementController",["Question","Option","questionService"],fu
 			}
 		};
 		
-		this.editOptions = function() {
-			$("#editModeBtn").hide();
-			$("#updateOptionsBtn").show();
-			$("#addOptionBtn").show();
+		this.switch2EditMode = function() {
+			$('#myTab2 a:last').tab('show');
 		};
 		
 		this.removeEditingOption = function(option) {
@@ -95,6 +93,23 @@ define("QuestionManagementController",["Question","Option","questionService"],fu
 				}
 			}
 			uku.refresh();
+		};
+		
+		this.saveOptions = function(){
+			var tempArr = [];
+			for(var i=0;i<this.addOptions.length;i++){
+				var item = this.addOptions[i];
+				if(item.name && item.name !== ""){
+					tempArr.push(item);
+				}
+			}
+			this.editQuestion.options = tempArr;		
+			var testingId = this.editTesting._id;		
+			questionService.update(testingId,this.editQuestion._id,this.editQuestion,function(data){
+				self.editTesting = data;
+				uku.refresh();
+                $('#myTab2 a:first').tab('show');
+			});
 		};
 	};
 });
