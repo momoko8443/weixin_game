@@ -71,5 +71,30 @@ define("QuestionManagementController",["Question","Option","questionService"],fu
 			return "Options";
 			
 		};
+		
+		this.isAllowEditOption = function() {
+			if(!this.editQuestion){
+				return true;
+			}else{
+				return false;
+			}
+		};
+		
+		this.editOptions = function() {
+			$("#editModeBtn").hide();
+			$("#updateOptionsBtn").show();
+			$("#addOptionBtn").show();
+		};
+		
+		this.removeEditingOption = function(option) {
+			for(var i=this.addOptions.length-1;i>=0;i--){
+				var item = this.addOptions[i];
+				if(item === option){
+					this.addOptions.splice(i,1);
+					break;
+				}
+			}
+			uku.refresh();
+		};
 	};
 });

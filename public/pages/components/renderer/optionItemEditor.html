@@ -1,11 +1,8 @@
-<div class="inputItem">
+<div>
 	<input type="text" uku-value="option.name" class="inputItem" style="width: 250px">
 	<input type="number" uku-value="option.score" class="inputItem" style="width: 50px">
-	<button class="btn btn-success inputItem">
-		<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>
-	</button>
 	<button class="btn btn-danger inputItem">
-		<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+		<span class="glyphicon glyphicon-trash" aria-hidden="true" uku-onclick="parent.mgr2.removeEditingOption(option)"></span>
 	</button>
 	<div style="clear:both"></div>
 </div>

@@ -7,7 +7,11 @@ body {
 	padding: 0;
 }
 
-.inputItem{
+ul li {
+	list-style-type: none;
+}
+
+.inputItem {
 	margin: 4px;
 	float: left;
 }
