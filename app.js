@@ -179,6 +179,40 @@ app.put('/testing/:id/question/:qid', function(req, res) {
 	});
 	
 });
+//update question's options
+/*
+app.post('/testing/:id/question/:qid',function(req,res){
+	var testing_id = req.params.id;
+	var question_id = req.params.qid;
+	var question = req.body;
+	console.log(question);
+	var query = {
+		"_id" : testing_id
+	};
+	Testing.findOne(query, function(err, testing) {
+		if (err) {
+			console.error(err);
+		} else {
+			var question_doc = testing.questions.id(question_id);
+			if(!question_doc.options){
+				question_doc.options = [];
+			}
+			for(var i=0;i<question.options.length;i++){
+				console.log(question.options[i] + i);
+				question_doc.options.push(question.options[i]);
+			}
+			//question_doc.options.addToSet(question.options);
+			testing.save(function(err2, testing2) {
+				if (err2) {
+					console.error(err2);
+				} else {
+					res.send(testing2);
+				}
+			});
+		}
+	});
+});*/
+
 
 var server = app.listen(port, function() {
 	console.log('Listening on port %d', server.address().port);

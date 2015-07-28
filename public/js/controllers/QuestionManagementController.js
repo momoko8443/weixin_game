@@ -61,6 +61,9 @@ define("QuestionManagementController",["Question","Option","questionService"],fu
 		
 		this.showOptions = function(question) {
 			this.editQuestion = _.clone(question);
+			if(this.editQuestion.options){
+				this.addOptions = this.editQuestion.options;
+			}
 			uku.refresh();
 		};
 		
@@ -107,8 +110,15 @@ define("QuestionManagementController",["Question","Option","questionService"],fu
 			var testingId = this.editTesting._id;		
 			questionService.update(testingId,this.editQuestion._id,this.editQuestion,function(data){
 				self.editTesting = data;
+				for(var j=0;j<self.editTesting.questions.length;j++){
+					var q_item = self.editTesting.questions[j];
+					if(q_item._id === self.editQuestion._id){
+						self.editQuestion = q_item;
+						break;
+					}
+				}
 				uku.refresh();
-                $('#myTab2 a:first').tab('show');
+                $('#myTab2 a:first').tab('show');          
 			});
 		};
 	};
