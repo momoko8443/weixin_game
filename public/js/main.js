@@ -9,6 +9,7 @@ require.config({
         "Option": 'models/Option',
         "TestingManagementController": 'controllers/TestingManagementController',
         "QuestionManagementController": 'controllers/QuestionManagementController',
+        "OptionManagementController" :'controllers/OptionManagementController',
         "testingService":'services/TestingService',
         "questionService":'services/QuestionService'
     },

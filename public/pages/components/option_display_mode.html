@@ -1,7 +1,8 @@
 <div class="panel panel-default" style="margin: 10px">
 	<div class="panel-heading">
-		<label>{{mgr2.optionsPanelTitle()}}</label>	
-		<button id="editModeBtn" class="btn btn-success" style="float: right;margin-right: 8px" uku-disabled="mgr2.isAllowEditOption()" uku-onclick="mgr2.switch2EditMode()">
+		<label>{{mgr3.optionsPanelTitle()}}</label>	
+		<button id="editModeBtn" class="btn btn-success" style="float: right;margin-right: 8px" 
+			uku-disabled="mgr3.isAllowEditOption()" uku-onclick="mgr3.switch2EditMode()">
 			<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 		</button>
 	</div>
@@ -14,7 +15,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr uku-repeat="option in mgr2.editQuestion.options">
+				<tr uku-repeat="option in mgr3.editQuestion.options">
 					<td>{{option.name}}</td>
                     <td>{{option.score}}</td>
 				</tr>

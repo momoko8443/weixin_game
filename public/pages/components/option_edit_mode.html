@@ -1,17 +1,17 @@
 <div class="panel panel-default" style="margin: 10px">
 	<div class="panel-heading">
-		<label>{{mgr2.optionsPanelTitle()}}</label>			
+		<label>{{mgr3.optionsPanelTitle()}}</label>			
 		<button id="addOptionBtn" type="button" class="btn btn-success" style="float: right;margin-right: 8px" 
-		uku-onclick="mgr2.addOptionItem()">
+		uku-onclick="mgr3.addOptionItem()">
 			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 		</button>
-		<button id="updateOptionsBtn" class="btn btn-success" style="float: right;margin-right: 8px" uku-onclick="mgr2.saveOptions()">
+		<button id="updateOptionsBtn" class="btn btn-success" style="float: right;margin-right: 8px" uku-onclick="mgr3.saveOptions()">
 			<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>
 		</button>
 	</div>
 	<div class="panel-body">
 		<ul>
-			<li uku-repeat="option in mgr2.addOptions">
+			<li uku-repeat="option in mgr3.addOptions">
 				<div class="uku-include" src="components/renderer/optionItemEditor.html"></div>
 			</li>
 		</ul>
