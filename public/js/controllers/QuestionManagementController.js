@@ -1,6 +1,15 @@
 define("QuestionManagementController",["Question","OptionManagementController","questionService"],function(Question,OptionManagementController,questionService){
 	return function(uku){
 		var self = this;
+		var optionMgrCtrl;
+		(function(uku){
+			if(!optionMgrCtrl){
+				optionMgrCtrl = new OptionManagementController(uku);
+				uku.registerController("mgr3",optionMgrCtrl);
+				uku.dealWithElement($("#questionView"));
+			}
+		})(uku);
+		
 		this.editTesting = undefined;
 		this.back2ListView = function(){
 			$('#myTab a:first').tab('show');
@@ -52,14 +61,10 @@ define("QuestionManagementController",["Question","OptionManagementController","
 				return "No";
 			}
 		};
-		var optionMgrCtrl;
+		
 		this.showOptions = function(question) {
 			this.editQuestion = _.clone(question);
-			if(!optionMgrCtrl){
-				optionMgrCtrl = new OptionManagementController(uku);
-				uku.registerController("mgr3",optionMgrCtrl);
-				uku.dealWithElement($("#questionView"));
-			}
+			
 			optionMgrCtrl.editQuestion = this.editQuestion;
 			if (this.editQuestion.options) {	
 				optionMgrCtrl.addOptions = this.editQuestion.options;
